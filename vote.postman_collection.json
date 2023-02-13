@@ -1,0 +1,485 @@
+{
+	"info": {
+		"_postman_id": "5c7d88d4-cec9-4b1a-b808-0de59c5a78d5",
+		"name": "Collection Vote",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8645927"
+	},
+	"item": [
+		{
+			"name": "associado | association",
+			"item": [
+				{
+					"name": "Cria associado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Emerson Lourenzi\",\n    \"cpf\":\"70393075028\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "0.0.0.0:9000/v1/association/create",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"association",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca associado por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/association/find/id/6339b6ffddc2c97626e5a7b5",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"association",
+								"find",
+								"id",
+								"6339b6ffddc2c97626e5a7b5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca associado por cpf",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/association/find/cpf/70393075028",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"association",
+								"find",
+								"cpf",
+								"70393075028"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca todos associados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/association/find/all",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"association",
+								"find",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleta associado por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/association/delete/id/633899bd24b4523f2e8b05ab",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"association",
+								"delete",
+								"id",
+								"633899bd24b4523f2e8b05ab"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleta associado por cpf",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/association/delete/cpf/70393075028",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"association",
+								"delete",
+								"cpf",
+								"70393075028"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualiza associado",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Emerson Lourenzi\",\n    \"cpf\":\"70393075028\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "0.0.0.0:9000/v1/association/update/6339b6ffddc2c97626e5a7b5",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"association",
+								"update",
+								"6339b6ffddc2c97626e5a7b5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pauta | scheme",
+			"item": [
+				{
+					"name": "cria pauta ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"motiveScheme\": \"Presidente\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "0.0.0.0:9000/v1/scheme/create",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"scheme",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca todas as pautas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/scheme/find/all",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"scheme",
+								"find",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca pauta por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/scheme/find/id/6338e0985127fd71809dcfdc",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"scheme",
+								"find",
+								"id",
+								"6338e0985127fd71809dcfdc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleta pauta por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/scheme/delete/6338debdfad33247b3efda87",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"scheme",
+								"delete",
+								"6338debdfad33247b3efda87"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualiza pauta",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"motiveScheme\": \"Novo presidente alterado\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "0.0.0.0:9000/v1/scheme/update/6339b745ddc2c97626e5a7b6",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"scheme",
+								"update",
+								"6339b745ddc2c97626e5a7b6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "votação | voting",
+			"item": [
+				{
+					"name": "iniciar votação",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idScheme\":\"6339b745ddc2c97626e5a7b6\",\n    \"votingTime\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "0.0.0.0:9000/v1/voting/init",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"voting",
+								"init"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "finalizar votação",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/voting/ends/6339c26d0f708d0407918e96",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"voting",
+								"ends",
+								"6339c26d0f708d0407918e96"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "votar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idVoting\":\"6339c26d0f708d0407918e96\",\n    \"cpfAssociate\":\"92699647012\",\n    \"vote\":\"Sim\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "0.0.0.0:9000/v1/voting/vote",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"voting",
+								"vote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca resultado votação",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "0.0.0.0:9000/v1/voting/result/6339c26d0f708d0407918e96",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "9000",
+							"path": [
+								"v1",
+								"voting",
+								"result",
+								"6339c26d0f708d0407918e96"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "integração user info | herokuapp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://user-info.herokuapp.com/users/70393075028",
+					"protocol": "https",
+					"host": [
+						"user-info",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"70393075028"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

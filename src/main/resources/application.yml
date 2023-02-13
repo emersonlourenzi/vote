@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: /vote
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: vote
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      topic-name: vote
+
+server:
+  error:
+    include-message: "always"
+  port: 9000
