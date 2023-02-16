@@ -36,7 +36,7 @@ public class AssociationService {
     
     private Mono<AssociateEntity> validateCpfExists(AssociateEntity entity) {
         return associateRepository.findByCpf(entity.getCpf())
-            .doOnNext(AssociateEntity -> {
+            .doOnNext(associateEntity -> {
                 throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "Já existe um associado cadastrado com o cpf: " + entity.getCpf());

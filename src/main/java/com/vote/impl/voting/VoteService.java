@@ -34,7 +34,7 @@ public class VoteService {
     private final VotingRepository votingRepository;
     private final AssociationService associationService;
     private final UserInfoIntegration userInfoIntegration;
-    private final String UNABLE_TO_VOTE = "UNABLE_TO_VOTE";
+    private static final String UNABLE_VOTE = "UNABLE_TO_VOTE";
     
     public Mono<VoteImplResponse> vote(VoteImplRequest voteImplRequest) {
         return validateExistsAssociate(mapFrom(voteImplRequest))
@@ -76,7 +76,7 @@ public class VoteService {
         return userInfoIntegration.validateVoteEnabledAssociate(voteEntity.getCpfAssociate())
             .flatMap(able -> {
                 log.info(able.getStatus());
-                if (UNABLE_TO_VOTE.equals(able.getStatus())) {
+                if (UNABLE_VOTE.equals(able.getStatus())) {
                     return Mono.error(ExceptionUtils.buildError(
                         HttpStatus.CONFLICT,
                         "Associado não está habilitado ao voto"

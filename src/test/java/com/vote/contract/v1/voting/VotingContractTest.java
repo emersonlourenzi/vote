@@ -25,7 +25,7 @@ import static com.vote.contract.v1.voting.stub.VotingContractRequestStub.stubVot
     VotingRestController.class,
     VotingService.class
 })
-public class VotingContractTest {
+class VotingContractTest {
     
     @Autowired
     VotingRestController votingRestController;

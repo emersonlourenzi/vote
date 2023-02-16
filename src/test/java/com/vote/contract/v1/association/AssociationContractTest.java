@@ -25,7 +25,7 @@ import static com.vote.contract.v1.association.stub.AssociateEntityStub.*;
     AssociationRestController.class,
     AssociationService.class
 })
-public class AssociationContractTest {
+class AssociationContractTest {
     
     @Autowired
     AssociationRestController associationRestController;
