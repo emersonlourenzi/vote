@@ -1,4 +1,3 @@
----
 version: '2'
 services:
   zookeeper:
@@ -27,3 +26,8 @@ services:
       - 27017:27017
     environment:
       AUTH: "NO"
+
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
