@@ -1,6 +1,7 @@
 package com.vote.impl.voting;
 
-import com.vote.commons.exceptions.ExceptionUtils;
+import com.vote.commons.exceptions.scheme.SchemeFinalizedException;
+import com.vote.commons.exceptions.scheme.SchemeNotFoundException;
 import com.vote.impl.kafka.producer.MessageProducer;
 import com.vote.impl.scheme.repository.SchemeRepository;
 import com.vote.impl.scheme.repository.entity.SchemeEntity;
@@ -11,7 +12,6 @@ import com.vote.impl.voting.repository.VotingRepository;
 import com.vote.impl.voting.repository.entity.VotingEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,9 +41,7 @@ public class VotingService {
 
     private Mono<VotingImplRequest> validateScheme(VotingImplRequest votingImplRequest) {
         return schemeRepository.findById(votingImplRequest.getIdScheme())
-            .switchIfEmpty(Mono.defer(() -> Mono.error(ExceptionUtils.buildError(
-                HttpStatus.CONFLICT,
-                "O id de pauta informado: " + votingImplRequest.getIdScheme() + ", não encontrado")))
+            .switchIfEmpty(Mono.defer(() -> Mono.error(SchemeNotFoundException::new))
             ).flatMap(scheme -> updateDataScheme(scheme, votingImplRequest))
             .flatMap(schemeEntity -> Mono.just(votingImplRequest));
     }
@@ -70,10 +68,7 @@ public class VotingService {
         return votingRepository.findById(id)
             .flatMap(votingEntity -> {
                 if (votingEntity.getFinalDateVoting().isBefore(LocalDateTime.now())) {
-                    return Mono.error(ExceptionUtils.buildError(
-                        HttpStatus.CONFLICT,
-                        "Votação já está encerrada"
-                    ));
+                    return Mono.error(SchemeFinalizedException::new);
                 }
                 return Mono.just(votingEntity);
             });
@@ -90,18 +85,12 @@ public class VotingService {
             votingEntity.getFinalDateVoting().isAfter(dateNow)) {
             return Mono.just(votingEntity);
         }
-        return Mono.error(ExceptionUtils.buildError(
-            HttpStatus.CONFLICT,
-            "Não é possível encerrar uma votação que não está aberta"
-        ));
+        return Mono.error(SchemeFinalizedException::new);
     }
 
     public Flux<VotingEntity> findAll() {
         return votingRepository.findAll()
-            .switchIfEmpty(Mono.defer(() -> Mono.error(ExceptionUtils.buildError(
-                HttpStatus.CONFLICT,
-                "Nenhuma votação encontrada"
-            ))));
+            .switchIfEmpty(Mono.defer(() -> Mono.error(SchemeFinalizedException::new)));
     }
 
     public Mono<VotingEntity> sendMessageProducer(VotingEntity votingEntity) {

@@ -1,7 +1,8 @@
 package com.vote.impl.voting;
 
 import com.vote.commons.enums.VoteEnum;
-import com.vote.commons.exceptions.ExceptionUtils;
+import com.vote.commons.exceptions.associate.ErrorFindAssociateException;
+import com.vote.commons.exceptions.voting.VotingNotFoundException;
 import com.vote.impl.association.AssociationService;
 import com.vote.impl.voting.mapper.MapBuildVotingResultMapper;
 import com.vote.impl.voting.mapper.VoteEntityToImplResponseMapper;
@@ -37,7 +38,8 @@ public class VoteService {
     public Mono<VoteImplResponse> vote(VoteImplRequest voteImplRequest) {
         return validateExistsAssociate(mapFrom(voteImplRequest))
             .flatMap(this::validateExistsVoting)
-            .flatMap(this::validateAssociateEnabledVote)
+//            TODO Servidor heroku fora, implementação da integração concluida
+//            .flatMap(this::validateAssociateEnabledVote)
             .flatMap(this::validateAssociateAlreadyVoted)
             .flatMap(this::validateVotingDeadline)
             .flatMap(voteRepository::save)
@@ -46,17 +48,13 @@ public class VoteService {
 
     private Mono<VoteEntity> validateExistsAssociate(VoteEntity voteEntity) {
         return associationService.findAssociateByCpf(voteEntity.getCpfAssociate())
-            .switchIfEmpty(Mono.defer(() -> Mono.error(ExceptionUtils.buildError(
-                HttpStatus.CONFLICT,
-                "O CPF: " + voteEntity.getCpfAssociate() + ", não é um associado")))
+            .switchIfEmpty(Mono.defer(() -> Mono.error(ErrorFindAssociateException::new))
             ).flatMap(response -> Mono.just(voteEntity));
     }
 
     private Mono<VoteEntity> validateExistsVoting(VoteEntity voteEntity) {
         return votingRepository.findById(voteEntity.getIdVoting())
-            .switchIfEmpty(Mono.defer(() -> Mono.error(ExceptionUtils.buildError(
-                HttpStatus.CONFLICT,
-                "Votação com id: " + voteEntity.getIdVoting() + ", não existe")))
+            .switchIfEmpty(Mono.defer(() -> Mono.error(VotingNotFoundException::new))
             ).flatMap(response -> Mono.just(voteEntity));
     }
 
@@ -74,10 +72,7 @@ public class VoteService {
         return userInfoIntegration.validateVoteEnabledAssociate(voteEntity.getCpfAssociate())
             .flatMap(able -> {
                 if (UNABLE_VOTE.equals(able.getStatus())) {
-                    return Mono.error(ExceptionUtils.buildError(
-                        HttpStatus.CONFLICT,
-                        "Associado não está habilitado ao voto"
-                    ));
+                    return Mono.error(ErrorFindAssociateException::new);
                 }
                 return Mono.just(voteEntity);
             });
@@ -88,10 +83,7 @@ public class VoteService {
             .flatMap(votingEntity -> {
                 if (ObjectUtils.isEmpty(votingEntity.getFinalDateVoting()) ||
                     votingEntity.getFinalDateVoting().isBefore(LocalDateTime.now())) {
-                    return Mono.error(ExceptionUtils.buildError(
-                        HttpStatus.CONFLICT,
-                        "Prazo de votação expirado"
-                    ));
+                    return Mono.error(ErrorFindAssociateException::new);
                 }
                 return Mono.just(voteEntity);
             });
@@ -108,14 +100,10 @@ public class VoteService {
     private Mono<VoteResultImplResponse> validateIfTheVotingResultIsAvailable(
         VoteResultImplResponse voteResultImplResponse) {
         return votingRepository.findById(voteResultImplResponse.getIdVoting())
-            .switchIfEmpty(Mono.defer(() -> Mono.error(ExceptionUtils.buildError(
-                HttpStatus.CONFLICT,
-                "Id da votação informado não encontrado")))
+            .switchIfEmpty(Mono.defer(() -> Mono.error(ErrorFindAssociateException::new))
             ).flatMap(votingEntity -> {
                 if (votingEntity.getFinalDateVoting().isAfter(LocalDateTime.now())) {
-                    return Mono.error(ExceptionUtils.buildError(
-                        HttpStatus.CONFLICT,
-                        "Resultado da votação indisponivel, a votação está em aberto ainda"));
+                    return Mono.error(ErrorFindAssociateException::new);
                 }
                 return Mono.just(voteResultImplResponse);
             });

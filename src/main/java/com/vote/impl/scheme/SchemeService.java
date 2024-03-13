@@ -1,13 +1,13 @@
 package com.vote.impl.scheme;
 
-import com.vote.commons.exceptions.ExceptionUtils;
+import com.vote.commons.exceptions.scheme.SchemeFinalizedException;
+import com.vote.commons.exceptions.scheme.SchemeNotFoundException;
 import com.vote.impl.scheme.mapper.SchemeEntityToResponseMapper;
 import com.vote.impl.scheme.model.request.SchemeImplRequest;
 import com.vote.impl.scheme.model.response.SchemeImplResponse;
 import com.vote.impl.scheme.repository.SchemeRepository;
 import com.vote.impl.scheme.repository.entity.SchemeEntity;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import reactor.core.publisher.Flux;
@@ -43,19 +43,14 @@ public class SchemeService {
 
     private Mono<SchemeEntity> validateExistsScheme(String id) {
         return schemeRepository.findById(id)
-            .switchIfEmpty(Mono.defer(() -> Mono.error(ExceptionUtils.buildError(
-                HttpStatus.CONFLICT,
-                "Pauta com id " + id + ", não encontrado")))
+            .switchIfEmpty(Mono.defer(() -> Mono.error(SchemeNotFoundException::new))
             ).flatMap(Mono::just);
     }
 
     private Mono<SchemeEntity> validateAlreadyVotedSchemeOrDatePast(SchemeEntity schemeEntity) {
         if (!(ObjectUtils.isEmpty(schemeEntity.getFinalDateScheme())) &&
             schemeEntity.getFinalDateScheme().isBefore(LocalDateTime.now())) {
-            throw ExceptionUtils.buildError(
-                HttpStatus.CONFLICT,
-                "Pauta passadas não podem ser excluidas"
-            );
+            throw new SchemeFinalizedException();
         }
         return Mono.just(schemeEntity);
     }
